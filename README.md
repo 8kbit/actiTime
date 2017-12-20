@@ -11,10 +11,10 @@
 
 # Инструкции по установке:
 
-1) Установить базу PostgreSQL. База должна быть пустой. 
-	база доступна на	localhost:5432/actitime
-	db_user	 		p2p
-	db_password		n2bkjErp2ppNvW
+1) Установить базу PostgreSQL. База должна быть пустой.
+база доступна на localhost:5432/actitime
+db_user: p2p
+db_password: n2bkjErp2ppNvW
 
 Настройки базы расположены в actitime/build.gradle и actitime/src/main/resources/application.properties
 
