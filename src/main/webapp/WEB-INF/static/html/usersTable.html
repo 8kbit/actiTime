@@ -1,0 +1,360 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Список сотрудников</title>
+
+    <!-- jQuery  -->
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+    <!-- Bootstrap  -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/locale/bootstrap-table-en-US.min.js"></script>
+
+    <script src="/static/js/validator.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#userList">User list</a></li>
+        <li><a data-toggle="tab" href="#newUser">Create new user</a></li>
+        <li><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="userList" class="tab-pane fade in active" style="height: 300px">
+            <table id="table" data-toggle="table" data-url="/api/users" data-locale="en-US"
+                   data-pagination="true" data-side-pagination="server" data-page-list="[3, 5, 10]"
+                   data-page-size="3">
+                <thead>
+                <tr>
+                    <th data-field="userName" data-formatter="userNameFormatter">User name</th>
+                    <th formatter="columnFormatter" data-formatter="actionFormatter">Delete</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="newUser" class="tab-pane fade">
+            <br>
+
+            <form class="form-new" data-toggle="validator" action="/api/users">
+                <div class="form-group row">
+                    <label for="userName" class="col-sm-2 form-control-label">Username</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userName" name="userName" placeholder="Username"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 form-control-label">New password</label>
+
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="passwordCheck" class="col-sm-2 form-control-label">Retype new password</label>
+
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="passwordCheck" placeholder="Password"
+                               data-match="#password" data-match-error="Пароли не совпадают" required>
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-2 form-control-label">First Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lastName" class="col-sm-2 form-control-label">Last Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2">Manager flag</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="manager" checked="">Manager
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="form-new-submit" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="updateUser" class="tab-pane fade">
+            <br>
+
+            <form class="form-update" data-toggle="validator" action="/api/users">
+                <div class="form-group row">
+                    <label for="userName2" class="col-sm-2 form-control-label">Username</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userName2" name="userName" placeholder="Username"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password2" class="col-sm-2 form-control-label">New password</label>
+
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password2" placeholder="Password"
+                               name="password"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="passwordCheck2" class="col-sm-2 form-control-label">Retype new password</label>
+
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="passwordCheck2" placeholder="Password"
+                               data-match="#password2" data-match-error="Пароли не совпадают">
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="firstName2" class="col-sm-2 form-control-label">First Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="firstName2" name="firstName"
+                               placeholder="First Name"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="lastName2" class="col-sm-2 form-control-label">Last Name</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="lastName2" name="lastName" placeholder="Last name"
+                                >
+
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2">Manager flag</label>
+
+                    <div class="col-sm-10">
+                        <div class="checkbox" id="editManager">
+                            <label>
+                                <input type="checkbox" name="manager">Manager
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="form-update-submit" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+                <div class="form-group row hidden">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="version" name="version" placeholder="version"
+                                >
+                    </div>
+                </div>
+                <div class="form-group row hidden">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="version"
+                                >
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isManager;
+    var userId;
+    $.ajax({
+        url: "/api/auth/validate",
+        async: false
+    }).done(function (data) {
+        isManager = ($.grep(data['authorities'], function (authority) {
+            return authority === 'ROLE_MANAGER';
+        })).length > 0;
+        userId = data['id'];
+    }).fail(function () {
+        handleLogout();
+    });
+
+    var userNameFormatter = function (value, row) {
+        if (!isManager) return value;
+        else return '\<a href=\"javascript:void(0)\" onclick=\"onEditClick(' + row['id'] + ')\"\>' + value + '\</a\>';
+    };
+
+    var actionFormatter = function (value, row) {
+        if (!isManager || row['id'] == userId) return "";
+        else return '\<a href=\"javascript:void(0)\" onclick=\"onDeleteClick(' + row['id'] + ')\"\>delete\</a\>';
+    };
+
+    var onEditClick = function (id) {
+        showUpdateForm(id);
+    };
+
+    var onDeleteClick = function (id) {
+        jQuery.ajax({
+            type: 'DELETE',
+            url: "/api/users/" + id
+        }).done(function () {
+            $('#table').bootstrapTable('refresh');
+        }).fail(function (xhr) {
+            if (xhr.status == 401)  handleLogout();
+        });
+    };
+
+    function serializeToJSON(form) {
+        var data = {};
+        $.each(form.serializeArray(),
+                function (i, v) {
+                    if (!( $.trim(v.value).length == 0 ))
+                        data[v.name] = v.value;
+                });
+        data['manager'] = form.find("input[name='manager']").prop('checked');
+        return data;
+    }
+
+    function showErrors(xhr, form) {
+        $(".with-errors").empty();
+        $.each(xhr.responseJSON['errors'],
+                function (i, v) {
+                    form.find("input[name='" + i + "']").parent().children(".with-errors")
+                            .html("<ul class='list-unstyled'><li>" + v + "</li></ul>");
+                });
+    }
+
+    $(".form-new").submit(function (event) {
+        event.preventDefault();
+        if ($('#form-new-submit').hasClass("disabled")) return;
+        var form = $(".form-new");
+        jQuery.ajax({
+            type: 'POST',
+            url: form.attr("action"),
+            data: JSON.stringify(serializeToJSON(form)),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function () {
+            $(".with-errors").empty();
+            $('#table').bootstrapTable('refresh');
+            $('.nav-tabs a[href="#userList"]').tab('show');
+            $("input").val("");
+        }).fail(function (xhr) {
+            if (xhr.status == 401)  handleLogout();
+            showErrors(xhr, form);
+        });
+    });
+
+    var logout = function () {
+        $.get("/api/auth/logout").done(function () {
+            handleLogout();
+        }).fail(function () {
+            handleLogout();
+        });
+    };
+
+    function handleLogout() {
+        window.location.href = "/static/html/login.html";
+    }
+
+    function showUpdateForm(uId) {
+        $.get("/api/users/" + uId).done(function (data) {
+            $.each(data, function (i, v) {
+                $(".form-update").find("input[name='" + i + "']").val(v);
+            });
+            if (data['manager'] == true) $(".form-update").find("input[name='manager']").prop('checked', true);
+            else $(".form-update").find("input[name='manager']").prop('checked', false);
+            $(".form-update").find("input[name='userId']").val(data['id']);
+            if (uId == userId) $(".form-update").find("input[name='manager']").addClass('disabled');
+            else $(".form-update").find("input[name='manager']").removeClass('disabled');
+            if (uId == userId) $("#editManager").addClass('disabled');
+            else $("#editManager").removeClass('disabled');
+        }).fail(function (xhr) {
+            if (xhr.status == 401)  handleLogout();
+        });
+        $(".tab-pane").removeClass("active");
+        $(".tab-pane").removeClass("in");
+        $("#updateUser").addClass("active");
+        $("#updateUser").addClass("in");
+    }
+
+    $(".form-update").submit(function (event) {
+        event.preventDefault();
+        if ($('#form-update-submit').hasClass("disabled")) return;
+        var form = $(".form-update");
+        var data = serializeToJSON(form);
+        jQuery.ajax({
+            type: 'PUT',
+            url: form.attr("action") + "/" + data['userId'],
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function () {
+            $(".with-errors").empty();
+            $('#table').bootstrapTable('refresh');
+            $(".tab-pane").removeClass("active");
+            $(".tab-pane").removeClass("in");
+            $("#userList").addClass("active");
+            $("#userList").addClass("in");
+            $('.nav-tabs a[href="#userList"]').tab('show');
+            $("input").val("");
+        }).fail(function (xhr) {
+            if (xhr.status == 401)  handleLogout();
+            showErrors(xhr, form);
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.0.BUILD-SNAPSHOT'
+        springVersion = '4.0.3.RELEASE'
+        hibernateVersion = '4.3.11.Final'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:+'
+        classpath "org.liquibase:liquibase-gradle-plugin:1.2.1"
+        classpath "postgresql:postgresql:9.1-901-1.jdbc4"
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.liquibase.gradle'
+
+gretty {
+    contextPath = "/"
+    logDir = "log"
+    logFileName = "${project.name}"
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/db/changelogs.groovy'
+            url 'jdbc:postgresql://localhost:5432/actitime'
+            driver 'org.postgresql.Driver'
+            username 'p2p'
+            password 'n2bkjErp2ppNvW'
+
+            referenceUrl 'jdbc:postgresql://localhost:5432/actitime_dev'
+            referenceUsername 'p2p'
+            referencePassword 'n2bkjErp2ppNvW'
+        }
+    }
+}
+
+jar {
+    baseName = 'actitime'
+    version = '0.0.1'
+}
+
+war {
+    baseName = 'ROOT'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    compile("org.springframework:spring-core:${springVersion}")
+    compile("org.springframework:spring-beans:${springVersion}")
+    compile("org.springframework:spring-aop:${springVersion}")
+    compile("org.springframework:spring-jdbc:${springVersion}")
+    compile("org.springframework:spring-tx:${springVersion}")
+    compile("org.springframework:spring-orm:${springVersion}")
+    compile("org.springframework:spring-context:${springVersion}")
+
+    compile("org.springframework:spring-web:${springVersion}")
+    compile("org.springframework:spring-webmvc:${springVersion}")
+    compile("org.springframework:spring-websocket:${springVersion}")
+
+    compile("org.springframework.security:spring-security-core:${springVersion}")
+    compile("org.springframework.security:spring-security-web:${springVersion}")
+    compile("org.springframework.security:spring-security-acl:${springVersion}")
+    compile("org.springframework.security:spring-security-config:${springVersion}")
+
+    compile("org.springframework:spring-test:${springVersion}")
+
+    compile("org.hibernate:hibernate-core:${hibernateVersion}")
+    compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+    compile('javax.validation:validation-api:1.1.0.Final')
+    compile('org.hibernate:hibernate-validator:5.2.3.Final')
+    compile('postgresql:postgresql:9.1-901-1.jdbc4')
+    compile('org.springframework.data:spring-data-jpa:1.9.2.RELEASE')
+
+    compile('com.fasterxml.jackson.core:jackson-databind:2.7.0')
+    compile('javax.inject:javax.inject:1')
+    compile('org.apache.commons:commons-lang3:3.4')
+    compile('org.liquibase:liquibase-core:3.4.2')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.9'
+}
